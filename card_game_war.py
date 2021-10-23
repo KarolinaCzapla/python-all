@@ -57,26 +57,94 @@ class Player:
         return f'Player {self.name} has {len(self.all_cards)} cards.'
 
 
-two_hearts = Card(suits[0], ranks[0])
-mydeck = Deck()
-print(len(mydeck.all_cards))
-print(mydeck.all_cards[0])
-mydeck.shuffle()
-print(mydeck.all_cards[0])
-my_card = mydeck.deal_one()
+player_one = Player('One')
+player_two = Player('Two')
 
-Karolina = Player('Karolina')
-print(Karolina)
-Karolina.add_cards([my_card])
-print(Karolina)
-Karolina.add_cards([my_card, my_card])
-print(Karolina)
-Karolina.remove_one()
-print(Karolina)
+# new deck
+new_deck = Deck()
+new_deck.shuffle()
+
+# split the deck between the players
+for x in range(26):
+    player_one.add_cards(new_deck.deal_one())
+    player_two.add_cards(new_deck.deal_one())
+
+# set a variable just to have the game continue
+# check to see if anyone is losing
+game_on = True
+round_num = 0
+while game_on:
+    round_num += 1
+    print(f'Round {round_num}')
+
+    if len(player_one.all_cards) == 0:
+        print('Player One, out of cards. Player Two Wins!')
+        game_one = False
+        break
+    if len(player_two.all_cards) == 0:
+        print('Player Two, out of cards. Player One Wins!')
+        game_one = False
+        break
+
+# new round
+    player_one_cards = []
+    player_one_cards.append(player_one.remove_one())
+    player_two_cards = []
+    player_two_cards.append(player_two.remove_one())
+
+    at_war = True
+    while at_war:
+        if player_one_cards[-1].value > player_two_cards[-1].value:
+            player_one.add_cards(player_one_cards)
+            player_one.add_cards(player_two_cards)
+
+            at_war = False
+        elif player_one_cards[-1].value < player_two_cards[-1].value:
+            player_two.add_cards(player_one_cards)
+            player_two.add_cards(player_two_cards)
+
+            at_war = False
+        else:
+            print('WAR ! ')
+
+            if len(player_one.all_cards) <5:
+                print('Player One unable to declare war.')
+                print('PlAYER TWO WINS')
+                game_on = False
+                break
+            elif len(player_two.all_cards) < 5:
+                print('Player Two unable to declare war.')
+                print('PlAYER One WINS')
+                game_on = False
+                break
+            else:
+                for num in range(5):
+                    player_one_cards.append(player_one.remove_one())
+                    player_two_cards.append(player_two.remove_one())
 
 
 
 
+
+
+
+# two_hearts = Card(suits[0], ranks[0])
+# mydeck = Deck()
+# print(len(mydeck.all_cards))
+# print(mydeck.all_cards[0])
+# mydeck.shuffle()
+# print(mydeck.all_cards[0])
+# my_card = mydeck.deal_one()
+#
+# Karolina = Player('Karolina')
+# print(Karolina)
+# Karolina.add_cards([my_card])
+# print(Karolina)
+# Karolina.add_cards([my_card, my_card])
+# print(Karolina)
+# Karolina.remove_one()
+# print(Karolina)
+#
 
 
 # for card_object in new_deck.all_cards:
