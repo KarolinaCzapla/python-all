@@ -1,54 +1,84 @@
 import csv
 from matplotlib import pyplot as plt
 from allPackage.artistPackage import artist
+from allPackage.musicPackage import music
 
 
 class all_top10:
-    def __init__(self, id, title, artist, top_genre, year, bpm, nrgy):
+    def __init__(self, id, title, artist, top_genre, year):
         self.id = id
         self.title = title
         self.artist = artist
         self.top_genre = top_genre
         self.year = year
-        self.bmp = bpm
-        self.nrgy = nrgy
 
 
 data = []
 with open('top10s.csv', 'r') as file:
     reader = csv.reader(file)
     for row in reader:
-        data.append(all_top10(row[0], row[1], row[2], row[3], row[4], row[5], row[6]))
-
-# artist.all_artist(data)
-artist.count_artist(data)
-# artist.print_key_value(data)
-artist.sorted_artist(data)
-artist.top_ten(data)
-
-# def type_music():
-#     type = []
-#     for i in data:
-#         type.append(i.top_genre)
-#     return type
+        data.append(all_top10(row[0], row[1], row[2], row[3], row[4]))
 
 
+def stop():
+    print('Program has been disabled.')
+    exit()
+
+
+def menu(programs):
+    print('WELCOME\nMENU:')
+    for key, program in programs.items():
+        print(f'{key} - {program["name"]}')
+
+    return input('Choose an option from the following list, \n'
+                 'type a number and then press enter: ').upper()
+
+
+programs = {
+    '1': {'name': 'List of most popular artists on Spotify. ', 'function': artist.sorted_artist},
+    '2': {'name': 'Top-10 artist on Spotify. ', 'function': artist.top_ten},
+    '3': {'name': 'List of most popular music genres on Spotify.', 'function': music.sorted_music},
+    '4': {'name': 'Top-10 genres on Spotify. ', 'function': music.top_ten_type},
+    'X': {'name': 'Exit', 'function': stop},
+}
+choice = None
+
+while choice != 'X':
+    choice = menu(programs)
+    try:
+        if choice == 'X':
+            programs[choice]['function']()
+        else:
+            print('=' * 20)
+            programs[choice]['function'](data)
+            print('=' * 20)
+    except KeyError:
+        print('Sorry, I did no understand that. Please, choose again.')
+
+# x = []
+# y = []
 #
-# data = open('top10s.csv', encoding='utf-8')
-# data = csv.reader(data)
-# data_lines = list(data)
-# for lin in data_lines[:5]:
-#     print(lin)
+# for i in music.sorted_music(data)[:5]:
+#     x.append(i[0])
+#     y.append(i[1])
+# plt.bar(x, y)
+# plt.title('Top 5 genres of Music on Spotify 2010-2019')
+# plt.xlabel('TYPE')
+# plt.ylabel('VALUE')
+# plt.xticks(rotation=45)
+# plt.show()
 
 
-# for i in data:
-#     data_line.append(all_top10('id', 'title', 'artist'))
+# # artist.all_artist(data)
+# artist.count_artist(data)
+# # artist.print_key_value(data)
+# artist.sorted_artist(data)
+# artist.top_ten(data)
+# music.count_type_of_music(data)
+# music.sorted_music(data)
+# music.sorted_music(data)
+# music.top_ten_type(data)
 
-
-# all = []
-# for line in data_lines[1:15]:
-#     all.append(line[3])
-# print(all)
 
 # id
 # title - song's title
